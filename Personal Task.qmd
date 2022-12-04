@@ -1,0 +1,170 @@
+
+
+1. Dataset description. Also should include variables description with units and dataset credits.
+
+# display airquality dataset
+print(airquality)
+
+Output
+
+   Ozone Solar.R Wind Temp Month Day
+1      41     190  7.4   67     5   1
+2      36     118  8.0   72     5   2
+3      12     149 12.6   74     5   3
+4      18     313 11.5   62     5   4
+5      NA      NA 14.3   56     5   5
+6      28      NA 14.9   66     5   6
+7      23     299  8.6   65     5   7
+8      19      99 13.8   59     5   8
+9       8      19 20.1   61     5   9
+10     NA     194  8.6   69     5  10
+11      7      NA  6.9   74     5  11
+12     16     256  9.7   69     5  12
+13     11     290  9.2   66     5  13
+14     14     274 10.9   68     5  14
+15     18      65 13.2   58     5  15
+16     14     334 11.5   64     5  16
+17     34     307 12.0   66     5  17
+18      6      78 18.4   57     5  18
+19     30     322 11.5   68     5  19
+20     11      44  9.7   62     5  20
+21      1       8  9.7   59     5  21
+
+Get Informations of Dataset
+
+# use dim() to get dimension of dataset
+cat("Dimension:",dim(airquality))
+
+# use nrow() to get number of rows
+cat("\nRow:",nrow(airquality))
+
+# use ncol() to get number of columns
+cat("\nColumn:",ncol(airquality))
+
+# use names() to get name of variable of dataset
+cat("\nName of Variables:",names(airquality))
+
+
+Output
+
+Dimension: 153 6
+Row: 153
+Column: 6
+Name of Variables: Ozone Solar.R Wind Temp Month Day
+
+dim() - returns the dimension of the dataset i.e. 153 6
+nrow() - returns the number of row (observations) i.e. 153
+ncol() - returns the number of column (variables) i.e. 6
+names() - returns all the name of variables
+
+
+In R, we use the sort() function to sort values of variables in ascending order. For example,
+
+# sort values of Temp variable
+sort(airquality$Temp)
+
+
+Output
+
+ [1] 56 57 57 57 58 58 59 59 61 61 61 62 62 63 64 64 65 65 66 66 66 67 67 67 67
+ [26] 68 68 68 68 69 69 69 70 71 71 71 72 72 72 73 73 73 73 73 74 74 74 74 75 75
+ [51] 75 75 76 76 76 76 76 76 76 76 76 77 77 77 77 77 77 77 78 78 78 78 78 78 79
+ [76] 79 79 79 79 79 80 80 80 80 80 81 81 81 81 81 81 81 81 81 81 81 82 82 82 82
+[101] 82 82 82 82 82 83 83 83 83 84 84 84 84 84 85 85 85 85 85 86 86 86 86 86 86
+[126] 86 87 87 87 87 87 88 88 88 89 89 90 90 90 91 91 92 92 92 92 92 93 93 93 94
+[151] 94 96 97
+
+2. Data reading. Also could include data merging.
+
+#RData Files
+
+#Function: load()
+
+>  load("survey.rdata")
+
+Or
+
+>  load("survey.rda")
+
+#Notice that the result of this function is not assigned to an object name. When R calls load(), all of the R objects saved in the file are loaded into R. The names given to these objects when they were originally saved will be given to them when they are loaded. The command >  ls() can be used to print out all of the objects currently loaded into R.
+
+ 
+
+#RDS Files
+
+#Function: readRDS()
+
+>  dataRDS <- readRDS("survey.rds")
+
+#The readRDS function will restore a single R object. In this example, this object was assigned a new name of dataRDS.
+
+ 
+
+#Reading Excel Data Files
+
+#read_excel()
+
+#It may be easier to use Excel to save individual sheets as CSV files and then read the CSV files into R. However, reading the XLSX and XLS extensions is possible in R:
+
+> install.packages(“readxl”) > library(readxl) > dataEXCEL <- read_excel(“survey.xlsx”, sheet = 1) > dataEXCEL <- read_excel(“survey.xlsx”, sheet = “sheetname”)
+
+#This creates an R tibble (the newer version of an R dataframe).
+
+> dfEXCEL <- as.data.frame(dataEXCEL)
+
+
+3. Data tidying.
+library(tidyr)     # contains tools to tidy data
+library(ggplot2) # for plotting
+library(readr)     # a package for parsing data
+
+UBSprices <- read.csv("https://raw.githubusercontent.com/ds4stats/r-tutorials/master/tidying-data/data/UBSprices.csv", as.is = TRUE)
+polls <- read.csv("https://raw.githubusercontent.com/ds4stats/r-tutorials/master/tidying-data/data/rcp-polls.csv", na.strings = "--", as.is = TRUE)
+airlines <- read.csv("https://raw.githubusercontent.com/ds4stats/r-tutorials/master/tidying-data/data/airline-safety.csv", as.is = TRUE)
+
+head(UBSprices)
+##        city rice2003 rice2009
+## 1 Amsterdam        9       11
+## 2    Athens       19       27
+## 3  Auckland        9       13
+## 4   Bangkok       25       27
+## 5 Barcelona       10        8
+## 6    Berlin       16       17
+
+tidy_ubs$year <- parse_number(tidy_ubs$year)
+head(tidy_ubs)
+##        city year price
+## 1 Amsterdam 2003     9
+## 2    Athens 2003    19
+## 3  Auckland 2003     9
+## 4   Bangkok 2003    25
+## 5 Barcelona 2003    10
+## 6    Berlin 2003    16
+
+
+4. Data analyzing with graphics.
+
+Scatterplots usually show two variables in a 2D cartesian plane. They are the default for the plot() function.
+
+plot(
+  airquality$Ozone, 
+  xlab='ozone concentration',
+  ylab='No of Instances', 
+  main='Ozone levels in NY city',
+  col='orange')
+  
+  Pie charts show the percentage distribution of a single variable in the form of parts of a circle. We can make pie charts in R by using the pie() function.
+
+pie.data <- c(0.3,0.25,0.12,0.23,0.06,0.04)
+names(pie.data) <- c(letters[1:6])
+pie(pie.data, col=rainbow(6))
+
+The pairs() function returns a matrix of multiple scatter plots. It is very useful when the number of variables is more than two. This function renders multiple scatter plots of every possible pair of the input variables. For example:
+
+pairs(iris[1:4], 
+      main = "Anderson's Iris Data -- 3 species",
+      pch = 21, 
+      bg = c("red", "orange", "blue")
+      [unclass(iris$Species)])
+
+
